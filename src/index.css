@@ -804,7 +804,7 @@ label {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 48px 24px 40px;
+  padding: 48px 24px 110px;
   max-width: 480px;
   margin: 0 auto;
 }
