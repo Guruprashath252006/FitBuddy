@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Check } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check, Dumbbell, Activity, Building2, CheckCircle2 } from 'lucide-react';
 import { sanitizeNumber, sanitizeString } from '../utils/sanitize';
 
 const STEPS = ['Welcome', 'Body Metrics', 'Your Goal', 'Fitness Level', 'Equipment', 'Schedule'];
@@ -21,9 +21,9 @@ const LEVELS = [
 ];
 
 const EQUIPMENT_OPTIONS = [
-  { id: 'dumbbells', emoji: '🏋️', label: 'Dumbbells' },
-  { id: 'bands',     emoji: '〽️', label: 'Resistance Bands' },
-  { id: 'gym',       emoji: '🏢', label: 'Full Gym Access' },
+  { id: 'dumbbells', icon: Dumbbell, label: 'Dumbbells' },
+  { id: 'bands',     icon: Activity, label: 'Resistance Bands' },
+  { id: 'gym',       icon: Building2, label: 'Full Gym Access' },
 ];
 
 const DAY_OPTIONS = [
@@ -230,12 +230,15 @@ const Onboarding = () => {
               <p style={{ color: 'var(--text-muted)', marginBottom: '8px' }}>Bodyweight is always included. Select anything else you have.</p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', background: 'var(--teal-subtle)', border: '1px solid rgba(0,217,255,0.2)', borderRadius: 'var(--r-md)', marginBottom: '20px' }}>
-                <span style={{ fontSize: '1.3rem' }}>✅</span>
+                <CheckCircle2 size={20} color="var(--teal)" />
                 <span style={{ fontSize: '0.9rem', color: 'var(--teal)', fontWeight: 600 }}>Bodyweight — Always included</span>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {EQUIPMENT_OPTIONS.map(eq => (
+                {EQUIPMENT_OPTIONS.map(eq => {
+                  const Icon = eq.icon;
+                  const isSelected = form.equipment.includes(eq.id);
+                  return (
                   <motion.button
                     key={eq.id}
                     whileHover={{ scale: 1.01 }}
@@ -243,16 +246,23 @@ const Onboarding = () => {
                     onClick={() => toggle('equipment', eq.id)}
                     style={{
                       display: 'flex', alignItems: 'center', gap: '16px', padding: '18px 20px',
-                      background: form.equipment.includes(eq.id) ? 'rgba(0,217,255,0.1)' : 'var(--glass-bg)',
-                      border: `1px solid ${form.equipment.includes(eq.id) ? 'var(--teal)' : 'var(--glass-border)'}`,
+                      background: isSelected ? 'rgba(0,217,255,0.1)' : 'var(--glass-bg)',
+                      border: `1px solid ${isSelected ? 'var(--teal)' : 'var(--glass-border)'}`,
                       borderRadius: 'var(--r-lg)', cursor: 'pointer', textAlign: 'left', width: '100%',
                     }}
                   >
-                    <span style={{ fontSize: '1.8rem' }}>{eq.emoji}</span>
-                    <span style={{ flex: 1, fontWeight: 600 }}>{eq.label}</span>
-                    {form.equipment.includes(eq.id) && <Check size={20} color="var(--teal)" />}
+                    <div style={{ 
+                      width: '40px', height: '40px', borderRadius: '12px', 
+                      background: isSelected ? 'rgba(0,217,255,0.2)' : 'rgba(255,255,255,0.05)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 
+                    }}>
+                      <Icon size={22} color={isSelected ? 'var(--teal)' : 'var(--text-muted)'} />
+                    </div>
+                    <span style={{ flex: 1, fontWeight: 600, color: isSelected ? 'var(--teal)' : 'var(--text-primary)' }}>{eq.label}</span>
+                    {isSelected && <Check size={20} color="var(--teal)" />}
                   </motion.button>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
