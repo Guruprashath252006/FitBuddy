@@ -83,6 +83,14 @@ const Onboarding = () => {
     return true;
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && canNext()) {
+      e.preventDefault();
+      if (step === STEPS.length - 1) handleFinish();
+      else next();
+    }
+  };
+
   return (
     <div className="onboarding-step">
       {/* Progress indicators */}
@@ -119,6 +127,7 @@ const Onboarding = () => {
                   value={form.name}
                   maxLength={30}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  onKeyDown={handleKeyDown}
                   autoFocus
                 />
               </div>
@@ -134,11 +143,11 @@ const Onboarding = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '0' }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>Age</label>
-                  <input type="number" placeholder="25" min="5" max="120" value={form.age} onChange={e => setForm(f => ({ ...f, age: e.target.value }))} />
+                  <input type="number" placeholder="25" min="5" max="120" value={form.age} onChange={e => setForm(f => ({ ...f, age: e.target.value }))} onKeyDown={handleKeyDown} />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>Gender</label>
-                  <select value={form.gender} onChange={e => setForm(f => ({ ...f, gender: e.target.value }))}>
+                  <select value={form.gender} onChange={e => setForm(f => ({ ...f, gender: e.target.value }))} onKeyDown={handleKeyDown}>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -149,11 +158,11 @@ const Onboarding = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>Weight (kg)</label>
-                  <input type="number" placeholder="70" min="20" max="400" step="0.1" value={form.weight} onChange={e => setForm(f => ({ ...f, weight: e.target.value }))} />
+                  <input type="number" placeholder="70" min="20" max="400" step="0.1" value={form.weight} onChange={e => setForm(f => ({ ...f, weight: e.target.value }))} onKeyDown={handleKeyDown} />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label>Height (cm)</label>
-                  <input type="number" placeholder="175" min="100" max="250" value={form.height} onChange={e => setForm(f => ({ ...f, height: e.target.value }))} />
+                  <input type="number" placeholder="175" min="100" max="250" value={form.height} onChange={e => setForm(f => ({ ...f, height: e.target.value }))} onKeyDown={handleKeyDown} />
                 </div>
               </div>
             </div>
